@@ -1,0 +1,24 @@
+networks:
+  iternal:
+    name: iternal
+  exposed:
+    name: exposed
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: my-secret-pw
+    volumes:
+      - ./postgres/home:/home
+      - ./postgres/root:/root
+    ports:
+      - "5432:5432"
+      # networks:
+      # - iternal
+#    Here u can set RAM and CPU limits for the container
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1.5'
+#          memory: 7168M #7G
