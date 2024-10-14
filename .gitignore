@@ -1,4 +1,6 @@
 /src/config/db.conf.ts
+/docker/postgres
+
 
 # compiled output
 /dist
