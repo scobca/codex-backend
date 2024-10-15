@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { StorageModel } from '../models/storage.model';
 import { StorageModelInputDto } from '../dto/storage-model-input.dto';
-import { DocNotExistException } from '../../../exceptions/doc-not-exist.exception';
+import { NotExistException } from '../../../exceptions/not-exist.exception';
 
 @Injectable()
 export class StorageProvider {
@@ -50,7 +50,7 @@ export class StorageProvider {
 
       return this.getByID(id);
     } else {
-      throw new DocNotExistException('Document with ID', id);
+      throw new NotExistException('Document with ID', id);
     }
   }
 }
