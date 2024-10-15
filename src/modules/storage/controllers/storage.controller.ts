@@ -49,4 +49,9 @@ export class StorageController {
   ): Promise<StorageModel> {
     return await this.storageProvider.update(body.id, body.data);
   }
+
+  @Post('/findDocument')
+  async test(@Body() body: { index: string; query: string }) {
+    return await this.storageProvider.findWithES(body.index, body.query);
+  }
 }

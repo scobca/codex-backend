@@ -1,10 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { StorageModel } from '../models/storage.model';
 import { StorageModelInputDto } from '../dto/storage-model-input.dto';
 import { NotExistException } from '../../../exceptions/not-exist.exception';
+import { ElasticSearchInputDto } from '../dto/elastic-search-input.dto';
+import { ElasticsProvider } from './elastics.provider';
+import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
 
 @Injectable()
 export class StorageProvider {
+  constructor(@Inject(ElasticsProvider) private ess: ElasticsProvider) {}
+
   async getAll(): Promise<StorageModel[]> {
     return await StorageModel.findAll();
   }
@@ -21,6 +26,16 @@ export class StorageProvider {
     return await StorageModel.create({
       title: data.title,
       content: data.content,
+    }).then((res: StorageModel) => {
+      const docBody: CreateNewElasticDto = {
+        index: 'storage'.toLowerCase(),
+        id: res.id.toString(),
+        title: res.title,
+        content: res.content,
+      };
+
+      this.createDocument(docBody);
+      return res;
     });
   }
 
@@ -52,5 +67,12 @@ export class StorageProvider {
     } else {
       throw new NotExistException('Document with ID', id);
     }
+  }
+  async findWithES(index: string, query: string) {
+    return this.ess.getOne(new ElasticSearchInputDto(), index, query);
+  }
+
+  private async createDocument(data: CreateNewElasticDto) {
+    return await this.ess.create(data);
   }
 }
