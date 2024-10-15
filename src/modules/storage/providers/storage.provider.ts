@@ -6,6 +6,7 @@ import { ElasticSearchInputDto } from '../dto/elastic-search-input.dto';
 import { ElasticsProvider } from './elastics.provider';
 import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
 import { UpdateElasticDocDto } from '../dto/update-elastic-doc.dto';
+import { DeleteElasticDocDto } from '../dto/delete-elastic-doc.dto';
 
 @Injectable()
 export class StorageProvider {
@@ -45,6 +46,14 @@ export class StorageProvider {
       where: {
         id: id,
       },
+    }).then((res: number) => {
+      const data: DeleteElasticDocDto = {
+        index: 'storage'.toLowerCase(),
+        id: id.toString(),
+      };
+
+      this.deleteDocument(data);
+      return res;
     });
   }
 
@@ -87,5 +96,9 @@ export class StorageProvider {
 
   private async updateDocument(data: UpdateElasticDocDto) {
     return await this.ess.update(data);
+  }
+
+  private async deleteDocument(data: DeleteElasticDocDto) {
+    return await this.ess.delete(data);
   }
 }

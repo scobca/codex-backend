@@ -4,6 +4,7 @@ import { NotExistException } from '../../../exceptions/not-exist.exception';
 import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
 import { DismissCreatingDocumentException } from '../../../exceptions/dismiss-creating-document.exception';
 import { UpdateElasticDocDto } from '../dto/update-elastic-doc.dto';
+import { DeleteElasticDocDto } from '../dto/delete-elastic-doc.dto';
 
 @Injectable()
 export class ElasticsProvider {
@@ -76,6 +77,17 @@ export class ElasticsProvider {
         body: {
           doc: data.body,
         },
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async delete(data: DeleteElasticDocDto) {
+    try {
+      return await this.ess.delete({
+        index: data.index,
+        id: data.id,
       });
     } catch (err) {
       throw err;
