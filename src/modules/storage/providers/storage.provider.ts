@@ -5,6 +5,7 @@ import { NotExistException } from '../../../exceptions/not-exist.exception';
 import { ElasticSearchInputDto } from '../dto/elastic-search-input.dto';
 import { ElasticsProvider } from './elastics.provider';
 import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
+import { UpdateElasticDocDto } from '../dto/update-elastic-doc.dto';
 
 @Injectable()
 export class StorageProvider {
@@ -61,7 +62,15 @@ export class StorageProvider {
             id: id,
           },
         },
-      );
+      ).then(() => {
+        const updatedData: UpdateElasticDocDto = {
+          index: 'storage'.toLowerCase(),
+          id: id.toString(),
+          body: data,
+        };
+
+        this.updateDocument(updatedData);
+      });
 
       return this.getByID(id);
     } else {
@@ -74,5 +83,9 @@ export class StorageProvider {
 
   private async createDocument(data: CreateNewElasticDto) {
     return await this.ess.create(data);
+  }
+
+  private async updateDocument(data: UpdateElasticDocDto) {
+    return await this.ess.update(data);
   }
 }

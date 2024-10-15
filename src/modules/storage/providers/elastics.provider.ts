@@ -3,6 +3,7 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { NotExistException } from '../../../exceptions/not-exist.exception';
 import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
 import { DismissCreatingDocumentException } from '../../../exceptions/dismiss-creating-document.exception';
+import { UpdateElasticDocDto } from '../dto/update-elastic-doc.dto';
 
 @Injectable()
 export class ElasticsProvider {
@@ -64,6 +65,20 @@ export class ElasticsProvider {
       });
     } catch (err) {
       throw new DismissCreatingDocumentException('Error', err);
+    }
+  }
+
+  async update(data: UpdateElasticDocDto) {
+    try {
+      return await this.ess.update({
+        index: data.index,
+        id: data.id,
+        body: {
+          doc: data.body,
+        },
+      });
+    } catch (err) {
+      throw err;
     }
   }
 }
