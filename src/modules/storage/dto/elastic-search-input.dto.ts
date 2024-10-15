@@ -1,4 +1,4 @@
-import { BaseElasticComponentInterface } from '../../../config/base-elastic-component.interface';
+import { BaseElasticComponentInterface } from '../../../interfaces/base-elastic-component.interface';
 
 export class ElasticSearchInputDto implements BaseElasticComponentInterface {
   index: string;
