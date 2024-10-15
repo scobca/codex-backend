@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { NotExistException } from '../../../exceptions/not-exist.exception';
 import { CreateNewElasticDto } from '../dto/create-new-elastic.dto';
+import { DismissCreatingDocumentException } from '../../../exceptions/dismiss-creating-document.exception';
 
 @Injectable()
 export class ElasticsProvider {
@@ -62,7 +63,7 @@ export class ElasticsProvider {
         },
       });
     } catch (err) {
-      throw err;
+      throw new DismissCreatingDocumentException('Error', err);
     }
   }
 }
