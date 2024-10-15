@@ -9,7 +9,7 @@ export class StorageProvider {
     return await StorageModel.findAll();
   }
 
-  async getByID(id: number): Promise<StorageModel> {
+  async getByID(id: number): Promise<StorageModel | null> {
     return await StorageModel.findOne({
       where: {
         id: id,
@@ -19,10 +19,8 @@ export class StorageProvider {
 
   async create(data: StorageModelInputDto): Promise<StorageModel> {
     return await StorageModel.create({
-      where: {
-        title: data.title,
-        content: data.content,
-      },
+      title: data.title,
+      content: data.content,
     });
   }
 
@@ -52,7 +50,7 @@ export class StorageProvider {
 
       return this.getByID(id);
     } else {
-      throw new DocNotExistException('Document with ID: ', id);
+      throw new DocNotExistException('Document with ID', id);
     }
   }
 }

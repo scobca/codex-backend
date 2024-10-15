@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -22,31 +23,30 @@ export class StorageController {
     return await this.storageProvider.getAll();
   }
 
-  @Get('/getByIDG:id')
+  @Get('/getByIDG/:id')
   async getByIdGet(@Param('id') id: number): Promise<StorageModel> {
     return await this.storageProvider.getByID(id);
   }
 
   @Post('/getByIDP')
-  async getByIdPost(body: { id: number }): Promise<StorageModel> {
+  async getByIdPost(@Body() body: { id: number }): Promise<StorageModel> {
     return await this.storageProvider.getByID(body.id);
   }
 
   @Post('/create')
-  async create(body: StorageModelInputDto): Promise<StorageModel> {
+  async create(@Body() body: StorageModelInputDto): Promise<StorageModel> {
     return await this.storageProvider.create(body);
   }
 
   @Delete('/delete')
-  async delete(body: { id: number }): Promise<number> {
+  async delete(@Body() body: { id: number }): Promise<number> {
     return await this.storageProvider.delete(body.id);
   }
 
   @Patch('/update')
-  async update(body: {
-    id: number;
-    data: Partial<StorageModelInputDto>;
-  }): Promise<StorageModel> {
+  async update(
+    @Body() body: { id: number; data: Partial<StorageModelInputDto> },
+  ): Promise<StorageModel> {
     return await this.storageProvider.update(body.id, body.data);
   }
 }
