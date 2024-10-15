@@ -3,7 +3,7 @@ import { AppController } from './controllers/app.controller';
 import { AppService } from './providers/app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { dbConf } from '../../config/db.conf';
-import { ElasticsModule } from '../elastics/elastics.module';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { ElasticsModule } from '../elastics/elastics.module';
       autoLoadModels: true,
       synchronize: true,
     }),
-    ElasticsModule,
+    StorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -13,10 +13,6 @@ export class StorageModel extends Model {
   @Column
   id: number;
 
-  @PrimaryKey
-  @Column
-  docId: number;
-
   @Column
   title: string;
 
